@@ -21,32 +21,33 @@ export default function Cart() {
         initial="initial"
         animate="animate"
         exit="exit"
-        className="pt-40 pb-24 min-h-screen text-center"
+        className="pt-48 pb-32 min-h-screen bg-slate-950"
       >
-        <div className="max-w-xl mx-auto px-6">
+        <div className="max-w-xl mx-auto px-6 text-center">
           <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8 }}
-            className="mb-10 text-white/10"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+            className="mb-12"
           >
-            <ShoppingBag size={80} className="mx-auto" />
+            <ShoppingBag size={64} className="mx-auto text-white/5" />
           </motion.div>
-          <h1
-            className="text-4xl sm:text-5xl font-black tracking-tighter text-white mb-6"
-            style={{ fontFamily: 'Inter, sans-serif' }}
-          >
+          
+          <h1 className="text-5xl sm:text-6xl font-black tracking-tighter text-white mb-8">
             Your bag <br />
-            <span className="text-white/20">is empty.</span>
+            <span className="text-white/10 uppercase tracking-[0.2em] text-2xl block mt-4">is currently empty.</span>
           </h1>
-          <p className="text-slate-400 mb-10 font-medium">
-            Discover our latest collection and find something special.
+          
+          <p className="text-slate-500 mb-12 font-medium leading-relaxed">
+            The archive awaits. Explore our collection and <br className="hidden sm:block" />
+            curate your modern essentials.
           </p>
+          
           <button
             onClick={() => navigate('/shop')}
-            className="px-10 py-5 rounded-full bg-white text-black text-sm font-bold uppercase tracking-[0.2em] transition-all duration-300 hover:bg-slate-200 active:scale-95"
+            className="px-12 py-5 rounded-full bg-white text-slate-950 text-[10px] font-black uppercase tracking-[0.3em] transition-all hover:bg-slate-200 tap-scale shadow-2xl"
           >
-            Start Shopping
+            Explore Archive
           </button>
         </div>
       </motion.div>
@@ -59,73 +60,81 @@ export default function Cart() {
       initial="initial"
       animate="animate"
       exit="exit"
-      transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-      className="pt-40 pb-24 min-h-screen"
+      transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+      className="pt-48 pb-32 min-h-screen bg-slate-950"
     >
       <div className="max-w-7xl mx-auto px-6 sm:px-10">
-        <div className="mb-16">
-          <h1
-            className="text-5xl sm:text-6xl font-black tracking-tighter text-white"
-            style={{ fontFamily: 'Inter, sans-serif' }}
+        <div className="flex flex-col md:flex-row justify-between items-end gap-8 mb-24">
+          <div className="space-y-4">
+            <h1 className="text-5xl sm:text-7xl font-black tracking-tighter text-white">
+              Bag Review.
+            </h1>
+            <div className="flex items-center gap-3">
+              <span className="text-[10px] font-black uppercase tracking-[0.4em] text-white/20">
+                {cart.length} Elements in Collection
+              </span>
+              <div className="w-8 h-px bg-white/10" />
+            </div>
+          </div>
+          
+          <button
+            onClick={clearCart}
+            className="text-[10px] font-black uppercase tracking-[0.3em] text-white/10 hover:text-red-400 transition-colors py-2"
           >
-            Review <span className="text-white/40">Bag.</span>
-          </h1>
-          <p className="text-sm font-bold uppercase tracking-[0.2em] text-white/20 mt-4">
-            {cart.length} items in your collection
-          </p>
+            Dissolve Archive
+          </button>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 xl:gap-24 items-start">
-          {/* List */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-20 xl:gap-32 items-start">
+          {/* List Block */}
           <div className="lg:col-span-7 xl:col-span-8">
-            <div className="border-t border-white/5">
-              <AnimatePresence mode="popLayout">
+            <div className="border-t border-white/5 divide-y divide-white/5">
+              <AnimatePresence mode="popLayout" initial={false}>
                 {cart.map(item => (
                   <CartItem key={item.id} item={item} />
                 ))}
               </AnimatePresence>
             </div>
-
-            <button
-              onClick={clearCart}
-              className="mt-10 text-[10px] font-bold uppercase tracking-[0.3em] text-white/20 hover:text-red-400 transition-colors"
-            >
-              Clear all items
-            </button>
           </div>
 
-          {/* Summary */}
-          <div className="lg:col-span-5 xl:col-span-4 sticky top-32">
-            <div className="rounded-[3rem] p-10 bg-white/5 border border-white/10 backdrop-blur-3xl space-y-8">
-              <h2 className="text-xl font-bold tracking-tight text-white">Summary</h2>
+          {/* Summary Block */}
+          <div className="lg:col-span-5 xl:col-span-4 sticky top-40">
+            <div className="rounded-[3rem] p-12 bg-slate-900/40 border border-white/5 glass-premium space-y-10 relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-bl-[4rem] blur-2xl pointer-events-none" />
               
-              <div className="space-y-4">
-                <div className="flex justify-between text-sm font-medium">
-                  <span className="text-white/40">Subtotal</span>
+              <h2 className="text-2xl font-black tracking-tighter text-white">Collective.</h2>
+              
+              <div className="space-y-6">
+                <div className="flex justify-between items-center text-[10px] font-black uppercase tracking-[0.2em]">
+                  <span className="text-white/20">Subtotal</span>
                   <span className="text-white">${cartTotal.toFixed(2)}</span>
                 </div>
-                <div className="flex justify-between text-sm font-medium">
-                  <span className="text-white/40">Shipping</span>
-                  <span className="text-white">Calculated at next step</span>
+                <div className="flex justify-between items-center text-[10px] font-black uppercase tracking-[0.2em]">
+                  <span className="text-white/20">Sync Fee</span>
+                  <span className="text-white">Included</span>
                 </div>
-                <div className="pt-6 border-t border-white/5 flex justify-between">
-                  <span className="text-lg font-bold text-white">Total</span>
-                  <span className="text-2xl font-black tracking-tighter text-white">
+                <div className="pt-8 border-t border-white/5 flex justify-between items-end">
+                  <span className="text-[10px] font-black uppercase tracking-[0.4em] text-white/20 pb-2">Total Value</span>
+                  <span className="text-4xl font-black tracking-tighter text-white">
                     ${cartTotal.toFixed(2)}
                   </span>
                 </div>
               </div>
 
-              <button
-                className="w-full py-5 rounded-full bg-white text-black text-sm font-bold uppercase tracking-[0.2em] transition-all duration-300 hover:bg-slate-200 active:scale-95"
-                id="checkout-button"
-              >
-                Checkout
-              </button>
+              <div className="space-y-6">
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="w-full py-6 rounded-full bg-white text-slate-950 text-[10px] font-black uppercase tracking-[0.3em] transition-all hover:bg-slate-200 shadow-2xl"
+                  id="checkout-button"
+                >
+                  Confirm Sync
+                </motion.button>
 
-              <div className="flex items-center justify-center gap-2 opacity-20">
-                <ShieldCheck size={14} className="text-white" />
-                <span className="text-[10px] font-bold uppercase tracking-widest text-white">Secure Checkout</span>
+                <div className="flex items-center justify-center gap-3 opacity-20">
+                  <ShieldCheck size={14} className="text-white" />
+                  <span className="text-[10px] font-black uppercase tracking-widest text-white">Encrypted Sync</span>
+                </div>
               </div>
             </div>
           </div>

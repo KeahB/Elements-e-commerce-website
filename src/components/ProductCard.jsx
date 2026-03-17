@@ -24,10 +24,14 @@ export default function ProductCard({ product, index = 0 }) {
     addToCart(product)
     toast.success(`Added to bag`, {
       style: {
-        background: 'rgba(15, 23, 42, 0.9)',
-        backdropFilter: 'blur(10px)',
+        background: 'rgba(2, 6, 23, 0.95)',
+        backdropFilter: 'blur(12px)',
         color: '#fff',
-        border: '1px solid rgba(255,255,255,0.1)',
+        border: '1px solid rgba(255,255,255,0.05)',
+        borderRadius: '16px',
+        fontSize: '12px',
+        fontWeight: 'bold',
+        letterSpacing: '0.05em',
       }
     })
   }
@@ -36,57 +40,63 @@ export default function ProductCard({ product, index = 0 }) {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
+      layout
+      initial={{ opacity: 0, y: 15 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay: index * 0.05, ease: [0.22, 1, 0.36, 1] }}
-      className="group relative flex flex-col rounded-[2rem] overflow-hidden bg-[#0f172a]/40 border border-white/5 card-scale glass-premium"
+      transition={{ 
+        duration: 0.8, 
+        delay: index * 0.04, 
+        ease: [0.22, 1, 0.36, 1] 
+      }}
+      className="group relative flex flex-col rounded-[2.5rem] overflow-hidden bg-slate-900/40 border border-white/5 glass-premium magnetic-hover"
     >
-      {/* Image Container */}
-      <div
-        className="relative aspect-[4/5] overflow-hidden bg-white flex items-center justify-center"
-      >
-        <Link to={`/product/${product.id}`} className="w-full h-full flex items-center justify-center p-8">
-          <img
+      {/* Image Block */}
+      <div className="relative aspect-[4/5] bg-white overflow-hidden p-10 flex items-center justify-center">
+        <Link to={`/product/${product.id}`} className="w-full h-full flex items-center justify-center">
+          <motion.img
             src={product.image}
             alt={product.title}
-            className="w-full h-full object-contain transition-transform duration-700 group-hover:scale-110"
-            loading="lazy"
+            className="w-full h-full object-contain"
+            whileHover={{ scale: 1.1 }}
+            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           />
         </Link>
-
-        {/* Floating Category Badge */}
-        <div className="absolute top-4 left-4">
-          <span className="text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full bg-black/5 text-black/50 backdrop-blur-md border border-black/5">
-            {product.category}
-          </span>
-        </div>
+        
+        {/* Subtle Inner Glow on Hover */}
+        <div className="absolute inset-0 pointer-events-none transition-opacity duration-500 opacity-0 group-hover:opacity-100 bg-gradient-to-tr from-white/5 to-transparent" />
       </div>
 
-      {/* Content */}
-      <div className="flex flex-col flex-1 p-6 gap-2">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-1">
-            <Star size={12} fill="#fbbf24" style={{ color: '#fbbf24' }} />
-            <span className="text-[11px] font-medium text-slate-400">{rating}</span>
+      {/* Info Block */}
+      <div className="p-8 flex flex-col flex-1">
+        <div className="flex justify-between items-start mb-4">
+          <p className="text-[10px] font-black uppercase tracking-[0.3em] text-white/20">
+            {product.category}
+          </p>
+          <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-white/5 border border-white/5">
+            <Star size={10} className="text-yellow-500 fill-current" />
+            <span className="text-[10px] font-bold text-white/40">{rating}</span>
           </div>
-          <span className="text-xs font-semibold text-slate-500">
-            ${product.price.toFixed(2)}
-          </span>
         </div>
 
-        <Link to={`/product/${product.id}`}>
-          <h3 className="text-sm font-semibold text-slate-200 line-clamp-1 group-hover:text-white transition-colors">
+        <Link to={`/product/${product.id}`} className="flex-1">
+          <h3 className="text-lg font-bold tracking-tighter text-white leading-tight mb-2 group-hover:text-white/80 transition-colors line-clamp-2">
             {product.title}
           </h3>
         </Link>
 
-        <button
-          onClick={handleAddToCart}
-          className="mt-4 w-full py-3 rounded-2xl text-[11px] font-bold uppercase tracking-[0.1em] bg-white text-black transition-all duration-300 hover:bg-slate-200 active:scale-95"
-          id={`add-to-cart-${product.id}`}
-        >
-          Add to Bag
-        </button>
+        {/* Action Block */}
+        <div className="mt-8 flex items-center justify-between gap-4">
+          <span className="text-xl font-black tracking-tighter text-white">
+            ${product.price.toFixed(2)}
+          </span>
+          <button
+            onClick={handleAddToCart}
+            className="flex-1 py-4 rounded-2xl bg-white text-slate-950 text-[10px] font-black uppercase tracking-[0.2em] transition-all hover:bg-slate-200 tap-scale border border-white/10"
+            id={`add-to-cart-${product.id}`}
+          >
+            Add
+          </button>
+        </div>
       </div>
     </motion.div>
   )

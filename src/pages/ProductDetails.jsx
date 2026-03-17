@@ -47,33 +47,42 @@ export default function ProductDetails() {
 
   const handleAddToCart = () => {
     addToCart(product, quantity)
-    toast.success(`Added to bag`, {
+    toast.success(`Archive Added`, {
       style: {
-        background: 'rgba(15, 23, 42, 0.9)',
-        backdropFilter: 'blur(10px)',
+        background: 'rgba(2, 6, 23, 0.95)',
+        backdropFilter: 'blur(12px)',
         color: '#fff',
-        border: '1px solid rgba(255,255,255,0.1)',
+        border: '1px solid rgba(255,255,255,0.05)',
+        borderRadius: '16px',
+        fontSize: '12px',
+        fontWeight: 'bold',
+        letterSpacing: '0.05em',
       }
     })
   }
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center pt-32">
-        <div className="w-8 h-8 rounded-full border-2 border-white/10 border-t-white animate-spin" />
+      <div className="min-h-screen flex items-center justify-center bg-slate-950">
+        <motion.div 
+          animate={{ scale: [1, 1.2, 1], opacity: [0.2, 0.5, 0.2] }}
+          transition={{ duration: 2, repeat: Infinity }}
+          className="w-12 h-12 rounded-full border border-white/10"
+        />
       </div>
     )
   }
 
   if (error || !product) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center pt-32 gap-6">
-        <p className="text-sm font-bold uppercase tracking-[0.2em] text-white/40">{error || 'Item not found'}</p>
+      <div className="min-h-screen flex flex-col items-center justify-center bg-slate-950 gap-8">
+        <Package size={48} className="text-white/5" />
+        <p className="text-[10px] font-black uppercase tracking-[0.4em] text-white/20">{error || 'Data Corrupted'}</p>
         <button
           onClick={() => navigate('/shop')}
-          className="text-sm font-bold uppercase tracking-[0.2em] text-white hover:text-white/60 transition-colors"
+          className="px-10 py-4 rounded-full border border-white/5 text-[10px] font-black uppercase tracking-[0.2em] text-white hover:bg-white/5 transition-all tap-scale"
         >
-          Back to Shop
+          Return to Archive
         </button>
       </div>
     )
@@ -87,109 +96,108 @@ export default function ProductDetails() {
       initial="initial"
       animate="animate"
       exit="exit"
-      transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-      className="pt-32 pb-24 min-h-screen"
+      transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+      className="pt-32 pb-24 min-h-screen bg-slate-950"
     >
       <div className="max-w-7xl mx-auto px-6 sm:px-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 xl:gap-24 items-start">
-          {/* Image Container */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 xl:gap-24 items-center">
+          
+          {/* Visual Block */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-            className="rounded-[3rem] overflow-hidden bg-white aspect-[4/5] flex items-center justify-center p-16"
+            initial={{ opacity: 0, x: -40 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
+            className="rounded-[3rem] overflow-hidden bg-white aspect-square flex items-center justify-center p-12 relative group"
           >
-            <img
+            <motion.img
               src={product.image}
               alt={product.title}
-              className="max-w-full max-h-full object-contain transition-transform duration-1000 hover:scale-105"
+              className="max-w-[80%] max-h-[80%] object-contain"
+              whileHover={{ scale: 1.05 }}
+              transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
             />
+            <div className="absolute inset-0 bg-gradient-to-tr from-black/5 to-transparent pointer-events-none" />
+            <div className="absolute top-8 left-8">
+              <Link to="/shop" className="flex items-center gap-3 text-black/20 hover:text-black/60 transition-colors group/back">
+                <ArrowLeft size={14} className="group-hover/back:-translate-x-1 transition-transform" />
+                <span className="text-[9px] font-black uppercase tracking-[0.3em]">Back</span>
+              </Link>
+            </div>
           </motion.div>
 
-          {/* Info Panel */}
-          <div className="flex flex-col gap-10">
-            <div className="space-y-4">
-              <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-white/40">
-                {product.category}
-              </span>
-              <h1
-                className="text-4xl sm:text-5xl font-black tracking-tighter leading-[1.1] text-white"
-                style={{ fontFamily: 'Inter, sans-serif' }}
-              >
-                {product.title}
-              </h1>
-              <div className="flex items-center gap-4">
-                <div className="flex items-center gap-1">
-                  <Star size={14} fill="#fbbf24" style={{ color: '#fbbf24' }} />
-                  <span className="text-sm font-bold text-white">{rating}</span>
-                </div>
-                <span className="text-sm font-bold text-white/20">/</span>
-                <span className="text-sm font-medium text-white/40">Ships Worldwide</span>
-              </div>
-            </div>
-
+          {/* Info Block */}
+          <div className="space-y-10">
             <div className="space-y-6">
-              <div className="flex items-baseline gap-2">
-                <span className="text-4xl font-black tracking-tighter text-white">
-                  ${product.price.toFixed(2)}
+              <div className="flex items-center gap-4">
+                <span className="text-[10px] font-black uppercase tracking-[0.4em] text-white/20">
+                  {product.category}
                 </span>
-                <span className="text-xs font-bold text-white/20 uppercase tracking-widest italic">USD</span>
+                <div className="h-px w-8 bg-white/10" />
+                <div className="flex items-center gap-1.5">
+                  <Star size={12} className="text-yellow-500 fill-current" />
+                  <span className="text-[10px] font-black text-white/40">{rating}</span>
+                </div>
               </div>
-              <p className="text-base font-medium leading-relaxed text-slate-400 max-w-xl">
+              
+              <h1 className="text-4xl sm:text-5xl font-black tracking-tighter leading-[0.95] text-white">
+                {product.title}.
+              </h1>
+              
+              <p className="text-base font-medium leading-relaxed text-slate-400 tracking-tight max-w-lg">
                 {product.description}
               </p>
             </div>
 
-            <div className="space-y-8">
-              {/* Quantity */}
-              <div className="space-y-4">
-                <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/40">Quantity</p>
-                <div className="flex items-center gap-6">
-                  <div className="flex items-center gap-2 p-1 rounded-full bg-white/5 border border-white/10">
-                    <button
-                      onClick={() => setQuantity(q => Math.max(1, q - 1))}
-                      className="w-8 h-8 rounded-full flex items-center justify-center text-white hover:bg-white/10 transition-colors"
-                    >
-                      <Minus size={14} />
-                    </button>
-                    <span className="w-8 text-center text-sm font-bold text-white">
-                      {quantity}
-                    </span>
-                    <button
-                      onClick={() => setQuantity(q => q + 1)}
-                      className="w-8 h-8 rounded-full flex items-center justify-center text-white hover:bg-white/10 transition-colors"
-                    >
-                      <Plus size={14} />
-                    </button>
+            <div className="space-y-10">
+              <div className="flex items-baseline gap-3">
+                <span className="text-4xl font-black tracking-tighter text-white">
+                  ${product.price.toFixed(2)}
+                </span>
+                <span className="text-[9px] font-black text-white/10 uppercase tracking-[0.3em]">Excl. Taxes</span>
+              </div>
+
+              {/* Functional Row */}
+              <div className="flex items-center gap-6">
+                <div className="flex items-center gap-2 p-1 rounded-full bg-white/5 border border-white/5">
+                  <button
+                    onClick={() => setQuantity(q => Math.max(1, q - 1))}
+                    className="w-9 h-9 rounded-full flex items-center justify-center text-white hover:bg-white/10 transition-all tap-scale"
+                  >
+                    <Minus size={14} />
+                  </button>
+                  <span className="w-8 text-center text-sm font-black text-white">
+                    {quantity}
+                  </span>
+                  <button
+                    onClick={() => setQuantity(q => q + 1)}
+                    className="w-9 h-9 rounded-full flex items-center justify-center text-white hover:bg-white/10 transition-all tap-scale"
+                  >
+                    <Plus size={14} />
+                  </button>
+                </div>
+
+                <div className="flex-1">
+                  <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={handleAddToCart}
+                    className="w-full bg-white text-slate-950 py-4 rounded-full text-[10px] font-black uppercase tracking-[0.3em] transition-all hover:bg-slate-200 shadow-2xl"
+                  >
+                    Add to Archive
+                  </motion.button>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-3 gap-6 pt-10 border-t border-white/5">
+                {PERKS.map(({ icon: Icon, label }) => (
+                  <div key={label} className="space-y-3">
+                    <Icon size={14} className="text-white/20" />
+                    <p className="text-[8px] font-black uppercase tracking-[0.2em] text-white/40 leading-tight">
+                      {label}
+                    </p>
                   </div>
-                </div>
+                ))}
               </div>
-
-              {/* Action Buttons */}
-              <div className="flex flex-col sm:flex-row gap-4">
-                <button
-                  onClick={handleAddToCart}
-                  className="flex-1 bg-white text-black py-5 rounded-full text-sm font-bold uppercase tracking-[0.2em] transition-all duration-300 hover:bg-slate-200 active:scale-95"
-                >
-                  Add to Bag
-                </button>
-                <Link
-                  to="/cart"
-                  className="px-10 py-5 rounded-full border border-white/20 text-white text-sm font-bold uppercase tracking-[0.2em] transition-all duration-300 hover:bg-white/5 text-center"
-                >
-                  View Bag
-                </Link>
-              </div>
-            </div>
-
-            {/* Subtle Trust Indicators */}
-            <div className="pt-8 border-t border-white/5 grid grid-cols-3 gap-4">
-              {PERKS.map(({ icon: Icon, label }) => (
-                <div key={label} className="flex flex-col items-center gap-2 opacity-30 hover:opacity-100 transition-opacity">
-                  <Icon size={16} className="text-white" />
-                  <span className="text-[9px] font-bold uppercase tracking-[0.1em] text-white text-center">{label}</span>
-                </div>
-              ))}
             </div>
           </div>
         </div>

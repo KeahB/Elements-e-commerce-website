@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react'
-import { motion } from 'framer-motion'
-import { Search, SlidersHorizontal, X, Package } from 'lucide-react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { Search, SlidersHorizontal, X, Package, ShieldCheck } from 'lucide-react'
 import ProductCard from '../components/ProductCard'
 import SkeletonCard from '../components/SkeletonCard'
 import FilterSidebar from '../components/FilterSidebar'
@@ -19,7 +19,6 @@ export default function Shop({ embedded = false }) {
   const [search, setSearch] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('All')
   const [maxPrice, setMaxPrice] = useState(PRICE_MAX)
-  const [sidebarOpen, setSidebarOpen] = useState(false)
 
   const filtered = useMemo(() => {
     return products.filter(p => {
@@ -39,83 +38,76 @@ export default function Shop({ embedded = false }) {
   }
 
   const content = (
-    <div className="max-w-7xl mx-auto px-6 sm:px-10 py-24">
-      {!embedded && (
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-          className="mb-16 text-center"
-        >
-          <h1
-            className="text-5xl sm:text-6xl font-black tracking-tighter mb-4"
-            style={{ fontFamily: 'Inter, sans-serif', color: '#fff' }}
-          >
-            All <span className="text-white/40">Products.</span>
-          </h1>
-          <p className="text-sm font-bold uppercase tracking-[0.2em] text-white/20">
-            {filtered.length} items available
-          </p>
-        </motion.div>
-      )}
-
-      {embedded && (
-        <div className="mb-16 text-center">
-          <motion.h2
-            initial={{ opacity: 0, y: 12 }}
+    <div className="max-w-7xl mx-auto px-6 sm:px-10 py-32">
+      {/* Header Section */}
+      <div className="flex flex-col md:flex-row justify-between items-end gap-8 mb-24">
+        <div className="space-y-4">
+          <motion.h1
+            initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-            className="text-4xl sm:text-5xl font-black tracking-tighter text-white"
-            style={{ fontFamily: 'Inter, sans-serif' }}
+            className="text-5xl sm:text-7xl font-black tracking-tighter text-white"
           >
-            Curated <span className="text-white/40">Selection.</span>
-          </motion.h2>
+            {embedded ? 'Curated.' : 'Archive.'}
+          </motion.h1>
+          <div className="flex items-center gap-3">
+            <span className="text-[10px] font-black uppercase tracking-[0.4em] text-white/20">
+              {filtered.length} Items Indexed
+            </span>
+            <div className="w-8 h-px bg-white/10" />
+          </div>
         </div>
-      )}
 
-      {/* Search Input - Minimal Apple Style */}
-      <div className="max-w-2xl mx-auto mb-16 px-4">
-        <div className="relative">
+        {/* Search - Ultra Minimal */}
+        <div className="w-full md:w-96 relative group">
           <input
             type="text"
-            placeholder="Search our collection"
+            placeholder="Search Archive"
             value={search}
             onChange={e => setSearch(e.target.value)}
-            className="w-full bg-transparent border-b border-white/10 py-4 text-xl font-medium text-white placeholder:text-white/10 outline-none transition-all duration-300 focus:border-white focus:placeholder:text-white/20"
-            id="search-input"
+            className="w-full bg-transparent border-b border-white/5 py-4 text-sm font-bold uppercase tracking-[0.2em] text-white placeholder:text-white/10 outline-none transition-all duration-500 focus:border-white focus:placeholder:text-transparent"
           />
           <Search
-            size={20}
-            className="absolute right-0 top-1/2 -translate-y-1/2 pointer-events-none opacity-20"
-            style={{ color: '#fff' }}
+            size={14}
+            className="absolute right-0 top-1/2 -translate-y-1/2 text-white/10 group-focus-within:text-white transition-colors"
           />
         </div>
       </div>
 
-      <div className="flex flex-col lg:flex-row gap-12">
+      <div className="flex flex-col lg:flex-row gap-20 items-start">
         {/* Sidebar */}
-        <div className="w-full lg:w-48 flex-shrink-0">
+        <div className="w-full lg:w-56 shrink-0 sticky top-32">
           <FilterSidebar
             selectedCategory={selectedCategory}
-            onCategoryChange={v => { setSelectedCategory(v); setSidebarOpen(false) }}
+            onCategoryChange={setSelectedCategory}
             priceRange={maxPrice}
             onPriceChange={setMaxPrice}
             onReset={handleReset}
           />
+          
+          <div className="mt-12 pt-12 border-t border-white/5 space-y-6">
+            <div className="flex items-center gap-3 opacity-20">
+              <ShieldCheck size={14} className="text-white" />
+              <span className="text-[10px] font-black uppercase tracking-widest text-white">Authentic</span>
+            </div>
+            <p className="text-[10px] font-bold text-white/10 leading-relaxed uppercase tracking-widest">
+              Every item in our collection is meticulously inspected and verified for quality.
+            </p>
+          </div>
         </div>
 
         {/* Grid */}
-        <div className="flex-1">
+        <div className="flex-1 min-w-0">
           {error && (
-            <div className="text-center py-20 bg-white/5 rounded-[2rem] border border-white/5">
-              <p className="text-sm font-bold uppercase tracking-[0.2em] text-white/40">Connection Error</p>
-              <p className="text-sm mt-2 text-white/20">{error}</p>
+            <div className="py-40 text-center glass-premium rounded-[3rem] border-white/5">
+              <Package size={40} className="mx-auto text-white/10 mb-6" />
+              <h3 className="text-xl font-bold tracking-tight text-white mb-2">Sync Error</h3>
+              <p className="text-sm text-white/20 max-w-xs mx-auto">Unable to retrieve the archive. Please check your connection.</p>
             </div>
           )}
 
           {loading && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-10">
               {Array.from({ length: 6 }).map((_, i) => (
                 <SkeletonCard key={i} />
               ))}
@@ -123,22 +115,25 @@ export default function Shop({ embedded = false }) {
           )}
 
           {!loading && !error && filtered.length === 0 && (
-            <div className="text-center py-40 border border-dashed border-white/10 rounded-[3rem]">
-              <p className="text-sm font-bold uppercase tracking-[0.2em] text-white/20">No matching items</p>
+            <div className="py-40 text-center border border-dashed border-white/10 rounded-[3rem]">
+              <Package size={40} className="mx-auto text-white/5 mb-6" />
+              <p className="text-xs font-black uppercase tracking-[0.3em] text-white/20">Empty Result</p>
               <button
                 onClick={handleReset}
-                className="mt-6 text-[10px] font-bold uppercase tracking-[0.2em] text-white hover:text-white/60 transition-colors"
+                className="mt-8 px-8 py-4 rounded-full border border-white/5 text-[10px] font-black uppercase tracking-[0.2em] text-white hover:bg-white/5 transition-all tap-scale"
               >
-                Clear Filters
+                Reset Archive
               </button>
             </div>
           )}
 
           {!loading && !error && filtered.length > 0 && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-8">
-              {filtered.map((product, idx) => (
-                <ProductCard key={product.id} product={product} index={idx} />
-              ))}
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-10">
+              <AnimatePresence mode="popLayout" initial={false}>
+                {filtered.map((product, idx) => (
+                  <ProductCard key={product.id} product={product} index={idx} />
+                ))}
+              </AnimatePresence>
             </div>
           )}
         </div>
@@ -154,8 +149,8 @@ export default function Shop({ embedded = false }) {
       initial="initial"
       animate="animate"
       exit="exit"
-      transition={{ duration: 0.3 }}
-      className="pt-16"
+      transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+      className="min-h-screen pt-20"
     >
       {content}
     </motion.div>

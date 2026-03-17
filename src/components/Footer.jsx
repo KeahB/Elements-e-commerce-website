@@ -18,53 +18,66 @@ const FOOTER_LINKS = [
 
 export default function Footer() {
   return (
-    <footer className="bg-slate-950 border-t border-white/5 pt-24 pb-12 overflow-hidden">
+    <footer className="bg-slate-950 border-t border-white/5 pt-32 pb-16 overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 sm:px-10">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-16 mb-24">
-          {/* Brand */}
-          <div className="md:col-span-1 space-y-6">
-            <Link to="/" className="flex items-center gap-2 group">
-              <span
-                className="text-lg font-bold tracking-tighter"
-                style={{ fontFamily: 'Inter, sans-serif' }}
-              >
-                <span className="text-white">LUXE</span>
-                <span className="text-white/40 group-hover:text-white/60 transition-colors">SHOP.</span>
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-16 mb-24">
+          {/* Brand Block */}
+          <div className="md:col-span-5 space-y-8">
+            <Link to="/" className="inline-block tap-scale">
+              <span className="text-xl font-black tracking-tighter text-white">
+                ELEMENTS<span className="text-white/20">.</span>
               </span>
             </Link>
-            <p className="text-sm font-medium leading-relaxed text-slate-500 max-w-xs">
-              Designing the future of digital commerce with uncompromising quality and minimal aesthetics.
+            <p className="text-slate-500 text-sm font-medium leading-relaxed max-w-sm">
+              Defining the interface of modern essentialism. Curated products for the digital native, delivered with precision and elegance.
             </p>
+            <div className="flex gap-6">
+              {[Twitter, Instagram, Github, Linkedin].map((Icon, i) => (
+                <a
+                  key={i}
+                  href="#"
+                  className="text-white/20 hover:text-white transition-all tap-scale"
+                  aria-label="Social link"
+                >
+                  <Icon size={18} />
+                </a>
+              ))}
+            </div>
           </div>
 
-          {/* Links */}
-          {FOOTER_LINKS.map(group => (
-            <div key={group.title} className="space-y-6">
-              <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-white">
-                {group.title}
-              </h3>
-              <ul className="space-y-4">
-                {group.links.map(link => (
-                  <li key={link}>
-                    <Link
-                      to="/"
-                      className="text-sm font-medium text-slate-500 hover:text-white transition-colors"
-                    >
-                      {link}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
+          {/* Links Block */}
+          <div className="md:col-span-7 grid grid-cols-2 sm:grid-cols-3 gap-12">
+            {FOOTER_LINKS.map(section => (
+              <div key={section.title} className="space-y-6">
+                <h4 className="text-[10px] font-black uppercase tracking-[0.4em] text-white/20">
+                  {section.title}
+                </h4>
+                <ul className="space-y-4">
+                  {section.links.map(link => (
+                    <li key={link}>
+                      <a
+                        href="#"
+                        className="text-sm font-bold text-slate-500 hover:text-white transition-colors"
+                      >
+                        {link}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
         </div>
 
-        {/* Bottom */}
-        <div className="pt-12 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6 text-[10px] font-bold uppercase tracking-[0.2em] text-white/20">
-          <p>© 2026 LUXE SHOP. ALL RIGHTS RESERVED.</p>
-          <div className="flex gap-8">
-            <Link to="/" className="hover:text-white transition-colors">Privacy Policy</Link>
-            <Link to="/" className="hover:text-white transition-colors">Terms of Service</Link>
+        {/* Bottom Block */}
+        <div className="pt-12 border-t border-white/5 flex flex-col sm:flex-row justify-between items-center gap-6">
+          <p className="text-[10px] font-black uppercase tracking-[0.3em] text-white/10">
+            &copy; 2026 ELEMENTS. ALL RIGHTS RESERVED.
+          </p>
+          <div className="flex gap-8 text-[10px] font-black uppercase tracking-[0.3em] text-white/10">
+            <a href="#" className="hover:text-white transition-colors">Privacy</a>
+            <a href="#" className="hover:text-white transition-colors">Terms</a>
+            <a href="#" className="hover:text-white transition-colors">Cookies</a>
           </div>
         </div>
       </div>

@@ -1,98 +1,99 @@
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import { ShoppingBag, ArrowRight, Sparkles } from 'lucide-react'
-
-const HERO_IMAGE = 'https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=1920&q=80&auto=format&fit=crop'
+import heroImage from '../assets/hero_bg.png'
 
 export default function HeroSection() {
   return (
     <section
-      className="relative min-h-[90vh] flex items-center justify-center overflow-hidden text-white"
+      className="relative min-h-[90vh] flex items-center justify-center overflow-hidden bg-slate-950"
       id="hero"
     >
-      {/* Background with higher quality treatment */}
-      <div
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-transform duration-[2s] hover:scale-105"
-        style={{ backgroundImage: `url(${HERO_IMAGE})` }}
+      {/* Background - Standard scroll flow */}
+      <motion.div
+        initial={{ scale: 1.05, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ duration: 1.5, ease: [0.22, 1, 0.36, 1] }}
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: `url(${heroImage})` }}
       />
 
-      {/* Multi-layer gradient overlay - more subtle and deep */}
-      <div
-        className="absolute inset-0"
-        style={{
-          background:
-            'radial-gradient(circle at center, rgba(2,6,23,0.4) 0%, rgba(2,6,23,0.9) 100%)',
-        }}
-      />
+      {/* Extreme Layered Overlay */}
+      <div className="absolute inset-0 bg-slate-950/50" />
+      <div className="absolute inset-0 bg-gradient-to-b from-slate-950/90 via-transparent to-slate-950" />
+      <div className="absolute inset-0 bg-gradient-to-r from-slate-950/40 via-transparent to-slate-950/40" />
 
       {/* Content */}
-      <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        {/* Headline - Apple Style: Large, Bold, Tight Tracking */}
-        <motion.h1
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-          className="text-6xl sm:text-7xl md:text-8xl font-black tracking-tighter leading-[0.9] mb-8"
-          style={{ fontFamily: 'Inter, sans-serif' }}
-        >
-          Discover Your <br />
-          <span className="gradient-text">Style.</span>
-        </motion.h1>
-
-        {/* Subheading - More minimal */}
-        <motion.p
-          initial={{ opacity: 0, y: 15 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
-          className="text-xl sm:text-2xl mb-12 max-w-2xl mx-auto font-medium"
-          style={{ color: '#94a3b8', letterSpacing: '-0.02em', lineHeight: 1.4 }}
-        >
-          Premium products curated for the modern essentialist.
-        </motion.p>
-
-        {/* CTA Buttons - Premium Minimalist */}
+      <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-10 text-center">
         <motion.div
-          initial={{ opacity: 0, y: 15 }}
+          initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.6 }}
-          className="flex flex-col sm:flex-row gap-6 justify-center items-center"
+          transition={{ duration: 1, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
+          className="space-y-8"
         >
-          <Link
-            to="/shop"
-            id="hero-shop-now"
-            className="group relative px-10 py-5 rounded-full text-lg font-bold transition-all duration-500 hover:scale-105"
-            style={{
-              background: '#fff',
-              color: '#020617',
-            }}
-          >
-            Shop the Collection
-          </Link>
+          {/* Headline - Unified Branding */}
+          <h1 className="text-6xl sm:text-8xl md:text-[10rem] font-black tracking-tighter leading-[0.8] mb-4">
+            <span className="block text-white">THE</span>
+            <span className="gradient-text-accent block">ELEMENTS.</span>
+          </h1>
 
-          <Link
-            to="/shop"
-            className="group inline-flex items-center gap-2 text-lg font-semibold transition-all duration-300 hover:gap-4"
-            style={{ color: '#fff' }}
-          >
-            Explore our Story <ArrowRight size={20} className="transition-transform duration-300" />
-          </Link>
+          {/* Subheading - Refined SaaS Style */}
+          <p className="text-xl sm:text-2xl max-w-2xl mx-auto font-medium text-slate-400 leading-relaxed tracking-tight">
+            Exceptional design for the modern native. <br className="hidden sm:block" />
+            Elegance in every form, power in every function.
+          </p>
+
+          {/* Buttons - Tactile & Magnetic */}
+          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center pt-8">
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              transition={{ type: "spring", stiffness: 400, damping: 25 }}
+            >
+              <Link
+                to="/shop"
+                className="group relative px-12 py-5 rounded-full text-sm font-bold uppercase tracking-[0.2em] bg-white text-slate-950 transition-all hover:bg-slate-200 shadow-2xl"
+              >
+                Shop Now
+              </Link>
+            </motion.div>
+
+            <motion.div
+              whileHover={{ x: 5 }}
+              transition={{ type: "spring", stiffness: 400, damping: 25 }}
+            >
+              <Link
+                to="/shop"
+                className="group inline-flex items-center gap-4 text-sm font-bold uppercase tracking-[0.2em] text-white/50 hover:text-white transition-colors"
+              >
+                The Story <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+              </Link>
+            </motion.div>
+          </div>
         </motion.div>
+      </div>
+
+      {/* Floating Elements - Production Polish */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute top-1/4 -left-20 w-80 h-80 bg-violet-600/10 rounded-full blur-[120px]" />
+        <div className="absolute bottom-1/4 -right-20 w-80 h-80 bg-blue-600/10 rounded-full blur-[120px]" />
       </div>
 
       {/* Scroll indicator */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 1.2, duration: 0.5 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
-        style={{ color: '#94a3b8' }}
+        transition={{ delay: 1.5, duration: 1 }}
+        className="absolute bottom-12 left-1/2 -translate-x-1/2"
       >
-        <span className="text-[10px] uppercase font-bold tracking-[0.2em] opacity-50">Scroll</span>
-        <motion.div
-          animate={{ y: [0, 8, 0] }}
-          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-          className="w-[1px] h-12 rounded-full bg-gradient-to-b from-white/50 to-transparent"
-        />
+        <div className="flex flex-col items-center gap-3">
+          <span className="text-[10px] font-black uppercase tracking-[0.4em] text-white/20">Expand</span>
+          <motion.div
+            animate={{ height: [24, 48, 24], opacity: [0.2, 0.5, 0.2] }}
+            transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+            className="w-px bg-white"
+          />
+        </div>
       </motion.div>
     </section>
   )
